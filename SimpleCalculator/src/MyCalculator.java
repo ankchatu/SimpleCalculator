@@ -17,22 +17,6 @@ public class MyCalculator {
 	private static final String PLUS = "+";
 	private static final String ALL_OPERATORS = "+-*/";
 	String routePath = System.getProperty("user.home");
-	
-	// CHECKS
-
-	// DONE
-	// if 3 characters - DONE
-	// if 1st and 3rd is numeric - DONE
-	// improve the logic to check the middle char - DONE
-	// check when 33 3 + 5 -> this should be invalid but here it will be 333+5 -
-	// DONE
-	// add logic for minus, multiply , divide - DONE
-	// send back result in a file - DONE
-	// make filename relative - DONE
-	// change program to instance not Static - DONE
-	// stop execution if only "=" in a new line - DONE
-	
-	// TODO
 
 
 	public static void main(String[] args) {

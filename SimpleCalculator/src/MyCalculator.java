@@ -8,6 +8,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author AnkChaturvedi
+ *
+ * This Class takes an input text file with name inputFile with a </br>
+ * list of mathematical statements and provides result in an output file</br>
+ * Prerequisite : please provide inputFile with mathematical expressions</br> at your user home directory.
+ */
 public class MyCalculator {
 
 	private static final String VALID_MATH_EXPRESSION = "([-+]?[0-9]*\\.?[0-9]+\\s*+[\\/\\+\\-\\*])+\\s*+([-+]?[0-9]*\\.?[0-9]+)";
@@ -26,6 +33,9 @@ public class MyCalculator {
 		
 	}
 
+	/**
+	 * entry point to the execution logic.
+	 */
 	private void startCalculation() {
 			   
 		String inputFile = routePath+"\\inputFile.txt";
@@ -34,16 +44,27 @@ public class MyCalculator {
 		writeToOutputFile(stringList);
 	}
 
-	private  void writeToOutputFile(List<String> stringList) {
+	/**
+	 * writes list of string to output file.
+	 * 
+	 * @param results calculated results to be printed in output file.
+	 */
+	private void writeToOutputFile(List<String> results) {
 		try {
 			String outputFile = routePath+"\\ouputFile.txt";
-			Files.write(Paths.get(outputFile), stringList);
+			Files.write(Paths.get(outputFile), results);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// this function will read input file stream
+	
+	/**
+	 * reads from the filename and initiates calculation logic.
+	 * 
+	 * @param fileName name of the input file
+	 * @return results after calculation completion as a List<String>.
+	 */
 	private List<String> readInputFile(String fileName) {
 
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
@@ -58,6 +79,11 @@ public class MyCalculator {
 
 	}
 
+	/**
+	 * @param instruction single mathematical expression to be calculated
+	 * @return result: single math expression calculation.</br>
+	 *         ERROR: if invalid mathematical expression.
+	 */
 	private String processInstruction(String instruction) {
 
 		String result = "ERROR";
@@ -76,6 +102,15 @@ public class MyCalculator {
 		return result;
 	}
 
+	/**
+	 * Iterates through a single mathematical expression and decides on which type of calculation to be done.
+	 * 
+	 * @param instruction a single mathematical expression
+	 * @param result calculated result for single instruction
+	 * @param operatorList operators expression
+	 * @param operandList operands in math expression
+	 * @return
+	 */
 	private String executeInstruction(String instruction, String result, List<String> operatorList,
 			List<String> operandList) {
 		if (operatorList.get(0).equals(PLUS)) {
@@ -94,6 +129,13 @@ public class MyCalculator {
 		return result;
 	}
 
+	/**
+	 * splits a mathematical expression into operator and operands.
+	 * 
+	 * @param operatorList operator in math expression
+	 * @param operandList operands in math expression
+	 * @param st a single token of instruction
+	 */
 	private void retrieveOperator(List<String> operatorList, List<String> operandList, StringTokenizer st) {
 		while (st.hasMoreTokens()) {
 			String token = st.nextToken();
@@ -106,6 +148,12 @@ public class MyCalculator {
 		}
 	}
 
+	/**
+	 * checks if an instruction is a valid mathematical expression.
+	 * 
+	 * @param instruction mathematical expression to be validated
+	 * @return
+	 */
 	private boolean isValidInstruction(String instruction) {
 		Pattern pattern = Pattern.compile(VALID_MATH_EXPRESSION);
 		return pattern.matcher(instruction.trim()).matches();

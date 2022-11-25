@@ -36,24 +36,36 @@ public class MyCalculator {
 	// change program to instance not Static
 
 	public static void main(String[] args) {
-		String fileName = "C:\\Users\\AnkChaturvedi\\eclipse-workspace\\SimpleCalculator\\src\\inputFile.txt";
-		readInputFile(fileName);
+		String fileName = "C:\\Users\\AnkChaturvedi\\git\\SimpleCalculator\\SimpleCalculator\\src\\inputFile.txt";
+		List<String> stringList = readInputFile(fileName);
+		
+		writeToOutputFile(stringList);
+	}
+
+	private static void writeToOutputFile(List<String> stringList) {
+		try {
+			Files.write(Paths.get("C:\\Users\\AnkChaturvedi\\git\\SimpleCalculator\\SimpleCalculator\\src\\ouputFile.txt"), stringList);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// this function will read input file stream
-	private static void readInputFile(String fileName) {
+	private static List<String> readInputFile(String fileName) {
 
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
-			List<String> stringList = stream.flatMap(instruction -> Stream.of(instruction))
+			return stream.flatMap(instruction -> Stream.of(instruction))
 					.map(i -> processInstruction(i)).collect(Collectors.toList());
 			
 		//  Writes the list into the output file
-	        Files.write(Paths.get("C:\\Users\\AnkChaturvedi\\eclipse-workspace\\SimpleCalculator\\src\\ouputFile.txt"), stringList);
+	        
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 

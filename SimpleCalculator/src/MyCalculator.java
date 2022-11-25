@@ -9,11 +9,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @author AnkChaturvedi
- *
  * This Class takes an input text file with name inputFile with a </br>
  * list of mathematical statements and provides result in an output file</br>
  * Prerequisite : please provide inputFile with mathematical expressions</br> at your user home directory.
+ * 
+ * @author AnkChaturvedi
+ * 
  */
 public class MyCalculator {
 
@@ -72,6 +73,8 @@ public class MyCalculator {
 			return stream.takeWhile(i -> !i.trim().contains("="))
 					.map(i -> processInstruction(i)).collect(Collectors.toList());	        
 
+		} catch (java.nio.file.NoSuchFileException e) {
+			System.out.println("\n Text File with name inputFile not found at user's home directory :" + routePath+"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

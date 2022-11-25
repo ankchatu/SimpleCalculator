@@ -16,7 +16,8 @@ public class MyCalculator {
 	private static final String MINUS = "-";
 	private static final String PLUS = "+";
 	private static final String ALL_OPERATORS = "+-*/";
-
+	String routePath = System.getProperty("user.home");
+	
 	// CHECKS
 
 	// DONE
@@ -27,40 +28,44 @@ public class MyCalculator {
 	// DONE
 	// add logic for minus, multiply , divide - DONE
 	// send back result in a file - DONE
-
+	// make filename relative - DONE
+	// change program to instance not Static - DONE
+	// stop execution if only "=" in a new line - DONE
+	
 	// TODO
 
-	// execute operation and send back result
-	// stop execution if only "=" in a new line
-	// make filename relative
-	// change program to instance not Static
 
 	public static void main(String[] args) {
-		String fileName = "C:\\Users\\AnkChaturvedi\\git\\SimpleCalculator\\SimpleCalculator\\src\\inputFile.txt";
-		List<String> stringList = readInputFile(fileName);
+		
+		MyCalculator myCalculator = new MyCalculator();
+		myCalculator.startCalculation();
+		
+	}
+
+	private void startCalculation() {
+			   
+		String inputFile = routePath+"\\inputFile.txt";
+		List<String> stringList = readInputFile(inputFile);
 		
 		writeToOutputFile(stringList);
 	}
 
-	private static void writeToOutputFile(List<String> stringList) {
+	private  void writeToOutputFile(List<String> stringList) {
 		try {
-			Files.write(Paths.get("C:\\Users\\AnkChaturvedi\\git\\SimpleCalculator\\SimpleCalculator\\src\\ouputFile.txt"), stringList);
+			String outputFile = routePath+"\\ouputFile.txt";
+			Files.write(Paths.get(outputFile), stringList);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	// this function will read input file stream
-	private static List<String> readInputFile(String fileName) {
+	private List<String> readInputFile(String fileName) {
 
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
-			return stream.flatMap(instruction -> Stream.of(instruction))
-					.map(i -> processInstruction(i)).collect(Collectors.toList());
-			
-		//  Writes the list into the output file
-	        
+			return stream.takeWhile(i -> !i.trim().contains("="))
+					.map(i -> processInstruction(i)).collect(Collectors.toList());	        
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,10 +74,7 @@ public class MyCalculator {
 
 	}
 
-	private static String processInstruction(String instruction) {
-		// TODO Auto-generated method stub
-		// System.out.println("instruction Processing...");
-		// check if instruction is valid
+	private String processInstruction(String instruction) {
 
 		String result = "ERROR";
 		
@@ -90,7 +92,7 @@ public class MyCalculator {
 		return result;
 	}
 
-	private static String executeInstruction(String instruction, String result, List<String> operatorList,
+	private String executeInstruction(String instruction, String result, List<String> operatorList,
 			List<String> operandList) {
 		if (operatorList.get(0).equals(PLUS)) {
 			result = instruction + " = "
@@ -108,7 +110,7 @@ public class MyCalculator {
 		return result;
 	}
 
-	private static void retrieveOperator(List<String> operatorList, List<String> operandList, StringTokenizer st) {
+	private void retrieveOperator(List<String> operatorList, List<String> operandList, StringTokenizer st) {
 		while (st.hasMoreTokens()) {
 			String token = st.nextToken();
 
@@ -120,7 +122,7 @@ public class MyCalculator {
 		}
 	}
 
-	private static boolean isValidInstruction(String instruction) {
+	private boolean isValidInstruction(String instruction) {
 		Pattern pattern = Pattern.compile(VALID_MATH_EXPRESSION);
 		return pattern.matcher(instruction.trim()).matches();
 	}
